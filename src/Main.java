@@ -16,7 +16,7 @@ public class Main
     {
     	try
     	{
-	        RedBlackTree<Integer> rbTree = new RedBlackTree();
+    		RedBlackTree<Integer> rbTree = new RedBlackTree();
 	        rbTree.insert(1);
 	        rbTree.insert(2);
 	        rbTree.insert(3);
@@ -25,7 +25,21 @@ public class Main
 	        rbTree.insert(6);
 	        rbTree.insert(7);
 	        rbTree.insert(8);
-	        System.out.println("Finished");
+	       // rbTree.insert(-8);
+	        System.out.println(rbTree.contains(7));
+	        System.out.println(rbTree.contains(13));
+	        System.out.println(rbTree.contains(2));
+	        System.out.println(rbTree.toString());
+	        System.out.println("Finished INT");
+	        
+	        RedBlackTree<String> rbTreeS = new RedBlackTree();
+	        rbTreeS.insert("Ana");
+	        rbTreeS.insert("Owen");
+	        rbTreeS.insert("Pete");
+	        rbTreeS.insert("Leo");
+	        System.out.println(rbTreeS.contains("Ana"));
+	        System.out.println(rbTreeS.toString());
+	        System.out.println("Finished String");
     	}
     	catch (Exception e)
     	{

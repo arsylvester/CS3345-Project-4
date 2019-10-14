@@ -219,16 +219,63 @@ public class RedBlackTree<E extends Comparable<E>>
 		}
 	}
 	
-	public Boolean contains(Comparable<E> object)
+	public boolean contains(Comparable<E> object)
 	{
 		if(object == null)
 			return false;
-		return false;
+		return contains(object, root);
+	}
+	
+	private boolean contains(Comparable<E> object, Node<E> node)
+	{
+		if(node == null)
+		{
+			return false;
+		}
+		
+		if(object.compareTo(node.element) < 0)
+		{
+			return contains(object, node.leftChild);
+		}
+		else if(object.compareTo(node.element) > 0)
+		{
+			return contains(object, node.rightChild);
+		}
+		else
+		{
+			return true;
+		}
 	}
 	
 	public String toString()
 	{
-		return "";
+		return toString(root, "");
+	}
+	
+	/**
+	 * Helper method for toString.
+	 * @param node Current node in the recursive pre-order traversal.
+	 * @param output Current string of values in the tree.
+	 * @return A string with values of the tree.
+	 */
+	private String toString(Node<E> node, String output)
+	{
+		if(node != null)
+		{
+			if(node.color == RED)
+			{
+				output = output + "*" + node.element.toString() + " " + toString(node.leftChild, output) + toString(node.rightChild, output);
+			}
+			else
+			{
+				output = output + node.element.toString() + " " + toString(node.leftChild, output) + toString(node.rightChild, output);
+			}
+			return output;
+		}
+		else
+		{
+			return "";
+		}
 	}
 
 }
