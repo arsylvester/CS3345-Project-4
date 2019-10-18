@@ -1,4 +1,10 @@
-
+/* Name: Andrew Sylvester
+ * Class: CS 3345
+ * Section: 001
+ * Semester: Fall 2019
+ * Project 4 
+ * Class Description: This class RedBlackTree is an implementation of a RedBlackTree.
+ */
 public class RedBlackTree<E extends Comparable<E>>
 {
 	private static Boolean RED = false;
@@ -6,6 +12,10 @@ public class RedBlackTree<E extends Comparable<E>>
 	private Node<E> root;
 	private int treeSize;
 	
+	/**
+	 * Node class to be used to hold data for the Red Black tree.
+	 * @param <E>
+	 */
 	private static class Node<E extends Comparable<E>>
 	{
 		public E element;
@@ -14,6 +24,11 @@ public class RedBlackTree<E extends Comparable<E>>
 		public Node<E> parent;
 		public Boolean color;
 		
+		/**
+		 * Constructor
+		 * @param element The element to be held by the node
+		 * @param parent The parent of the node
+		 */
 		public Node(E element, Node<E> parent)
 		{
 			this.element = element;
@@ -24,17 +39,28 @@ public class RedBlackTree<E extends Comparable<E>>
 		}
 	}
 	
+	/**
+	 * Constructor
+	 */
 	public RedBlackTree() 
 	{
 		root = null;
 		treeSize = 0;
 	}
 	
+	/**
+	 * Inserts a node in the proper position of the tree. If already exists will return false.
+	 * @param element The element to add to the tree.
+	 * @return Whether or not the element was added to the tree.
+	 * @throws NullPointerException
+	 */
 	public Boolean insert(E element) throws NullPointerException
 	{
+		//Make sure not null. Throw exception if so.
 		if(element == null)
 			throw new NullPointerException("Element is NULL.");
 		
+		//If tree is empty make root.
 		if(root == null)
 		{
 			root = new Node<E>(element, null);
@@ -43,11 +69,14 @@ public class RedBlackTree<E extends Comparable<E>>
 			return true;
 		}
 		
+		//Start by inserting at bottom of tree.
 		Node<E> z = insertAtBottom(element, root, root);
 		
+		//If already in tree return false.
 		if(z == null)
 			return false;
 		
+		//Now that the node is at the bottom need to rotate and/or recolor till in the right place and no double reds.
 		while(z.parent != null && z.parent.color == RED)
 		{
 			Node<E> uncle = getSibling(z.parent);
@@ -91,7 +120,7 @@ public class RedBlackTree<E extends Comparable<E>>
 							parent.rightChild.parent = parent;
 						
 						z.parent = grandparent.parent;
-						if(parent.parent != null)
+						if(z.parent != null)
 						{
 							if(z.element.compareTo(z.parent.element) < 0)
 								z.parent.leftChild = z;
@@ -123,7 +152,7 @@ public class RedBlackTree<E extends Comparable<E>>
 							parent.leftChild.parent = parent;
 						
 						z.parent = grandparent.parent;
-						if(parent.parent != null)
+						if(z.parent != null)
 						{
 							if(z.element.compareTo(z.parent.element) < 0)
 								z.parent.leftChild = z;
@@ -183,6 +212,13 @@ public class RedBlackTree<E extends Comparable<E>>
 			
 	}
 	
+	/**
+	 * This method is used by Insert to place the element at the bottom of the tree like a standard Binary insert.
+	 * @param element The element to add to the tree.
+	 * @param node The current node in the recursive traversal.
+	 * @param parent The parent of the current node in the recursive traversal.
+	 * @return The node that was just inserted. Returns null if already in the tree.
+	 */
 	private Node<E> insertAtBottom(E element, Node<E> node, Node<E> parent)
 	{
 		if(node == null)
@@ -207,6 +243,11 @@ public class RedBlackTree<E extends Comparable<E>>
 		}
 	}
 	
+	/**
+	 * Gets the sibling of a node. Useful for finding the uncle as well.
+	 * @param node The node to find the sibling of
+	 * @return The sibling, can be null.
+	 */
 	private Node<E> getSibling(Node<E> node)
 	{
 		if(node.parent.leftChild != null && node.parent.leftChild.element.compareTo(node.element) == 0) // is left, get right
@@ -219,6 +260,11 @@ public class RedBlackTree<E extends Comparable<E>>
 		}
 	}
 	
+	/**
+	 * Public method to see if an object is in the tree. Calls a helper contains method.
+	 * @param object The object to find in the tree.
+	 * @return True if found, false otherwise or if object is null.
+	 */
 	public boolean contains(Comparable<E> object)
 	{
 		if(object == null)
@@ -226,6 +272,12 @@ public class RedBlackTree<E extends Comparable<E>>
 		return contains(object, root);
 	}
 	
+	/**
+	 * Helper contains method. Finds an object in the tree recursively.
+	 * @param object The object to find in the tree.
+	 * @param node The current node in the recursive traversal of the tree.
+	 * @return True if object is found in the tree, false otherwise.
+	 */
 	private boolean contains(Comparable<E> object, Node<E> node)
 	{
 		if(node == null)
@@ -247,6 +299,10 @@ public class RedBlackTree<E extends Comparable<E>>
 		}
 	}
 	
+	/**
+	 * Public toString method. Calls the helper totString to recursively traverse the tree.
+	 * @return The elements in the tree in pre-order. * next to red nodes.
+	 */
 	public String toString()
 	{
 		return toString(root, "");

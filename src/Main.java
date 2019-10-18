@@ -2,10 +2,9 @@
  * Class: CS 3345
  * Section: 001
  * Semester: Fall 2019
- * Project 3 
- * Class Description: This class P2Driver runs the project to test IDedLinkedList, IDedObject, and MyItem
+ * Project 4 
+ * Class Description: This class Main runs the project to test RedBlackTree
  * using data from an input file. The results are outputed to an output file.
- * (Note: This file is pretty much untouched from what is given on eLearning as everything works as intended.)
  */
 import java.io.File;
 import java.io.PrintWriter;
@@ -14,37 +13,146 @@ public class Main
 {
     public static void main(String[] args) 
     {
-    	try
-    	{
-    		RedBlackTree<Integer> rbTree = new RedBlackTree();
-	        rbTree.insert(1);
-	        rbTree.insert(2);
-	        rbTree.insert(3);
-	        rbTree.insert(4);
-	        rbTree.insert(5);
-	        rbTree.insert(6);
-	        rbTree.insert(7);
-	        rbTree.insert(8);
-	       // rbTree.insert(-8);
-	        System.out.println(rbTree.contains(7));
-	        System.out.println(rbTree.contains(13));
-	        System.out.println(rbTree.contains(2));
-	        System.out.println(rbTree.toString());
-	        System.out.println("Finished INT");
-	        
-	        RedBlackTree<String> rbTreeS = new RedBlackTree();
-	        rbTreeS.insert("Ana");
-	        rbTreeS.insert("Owen");
-	        rbTreeS.insert("Pete");
-	        rbTreeS.insert("Leo");
-	        System.out.println(rbTreeS.contains("Ana"));
-	        System.out.println(rbTreeS.toString());
-	        System.out.println("Finished String");
-    	}
-    	catch (Exception e)
-    	{
-    		System.out.println(e.getMessage());
-    	}
+    	 Scanner in;
+         if (args.length!=2) 
+         {
+             System.out.print("Error Incorrect Arguments:" + Arrays.toString(args));
+             System.exit(0);    
+         } 
+         try 
+ 		{
+         	//Open input and output files. Create Scanner.
+ 			File input_file = new File(args[0]);
+ 			in = new Scanner(input_file).useDelimiter(":|\r\\n");
+ 			File output_file = new File(args[1]);
+ 			PrintWriter out;
+ 			out = new PrintWriter(output_file);
+ 			
+ 			String operation = in.next();
+ 			
+ 			//Integer red black tree
+ 			if(operation.compareTo("Integer") == 0)
+ 			{
+
+ 				RedBlackTree<Integer> rbt = new RedBlackTree<Integer>();
+
+ 				while (in.hasNext()) 
+ 				{
+
+ 					operation = in.next();
+
+ 					//Check for which operation to take
+ 					switch (operation) 
+ 					{	
+ 					case "Insert":
+ 						try 
+ 						{
+ 							//Should have a : before the int.
+ 							if(in.findInLine(":") == null)
+ 							{
+ 								out.println("Error in Line: " + operation);
+ 								break;
+ 							}	
+ 							String test = in.findInLine("-*[0-9]*");
+ 							if(test == null)
+ 								out.println(rbt.insert(null) ? "True" :"False");
+ 							else
+ 								out.println(rbt.insert(Integer.parseInt(test)) ? "True" :"False");
+
+ 						} 
+ 						catch (Exception e) 
+ 						{
+ 							out.println("Error in insert: NullPointerException raised");
+ 						}
+ 						break;
+ 					case "Contains":
+ 						//Should have a : before the int.
+ 						if(in.findInLine(":") == null)
+ 						{
+ 							out.println("Error in Line: " + operation);
+ 							break;
+ 						}	
+ 						String test = in.findInLine("-*[0-9]*");
+ 						if(test == null)
+ 							out.println(rbt.contains(null) ? "True" :"False");
+ 						else
+ 							out.println(rbt.contains(Integer.parseInt(test)) ? "True" :"False");
+ 						break;
+ 					case "PrintTree":
+ 						out.println(rbt.toString());
+ 						break;
+ 					default:
+ 						out.println("Error in Line: " + operation);
+ 						//in.nextLine();
+ 					}
+ 					if(in.hasNext())
+ 						in.nextLine();
+ 				}
+ 			}
+ 			//String red black tree
+ 			else if(operation.compareTo("String") == 0)
+ 			{
+ 				RedBlackTree<String> rbt = new RedBlackTree<String>();
+
+ 				while (in.hasNext()) 
+ 				{
+
+ 					operation = in.next();
+
+ 					//Check for which operation to take
+ 					switch (operation) 
+ 					{	
+ 					case "Insert":
+ 						try 
+ 						{
+ 							//Should have a : before the String.
+ 							if(in.findInLine(":") == null)
+ 							{
+ 								out.println("Error in Line: " + operation);
+ 								break;
+ 							}	
+ 							String test = in.findInLine(".*");
+ 							out.println(rbt.insert(test) ? "True" :"False");
+
+ 						} 
+ 						catch (Exception e) 
+ 						{
+ 							out.println("Error in insert: NullPointerException raised");
+ 						}
+ 						break;
+ 					case "Contains":
+ 						//Should have a : before the String.
+ 						if(in.findInLine(":") == null)
+ 						{
+ 							out.println("Error in Line: " + operation);
+ 							break;
+ 						}	
+ 						String test = in.findInLine(".*");
+ 						out.println(rbt.contains(test) ? "True" :"False");
+ 						break;
+ 					case "PrintTree":
+ 						out.println(rbt.toString());
+ 						break;
+ 					default:
+ 						out.println("Error in Line: " + operation);
+ 						//in.nextLine();
+ 					}
+ 					if(in.hasNext())
+ 						in.nextLine();
+ 				}
+ 			}
+ 			//Any other object then integer or string
+ 			else
+ 			{
+ 				out.println("Only works for objects Integers and Strings");
+ 			}
+ 			in.close();
+			out.close();
+ 		} 
+         catch (Exception e) 
+         {
+ 			System.out.println("Exception: " + e.getMessage());
+ 		}
     }
     
     
